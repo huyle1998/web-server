@@ -2,11 +2,16 @@ var net = require('net');
 var color = require('colors')
 var server = net.createServer();
 
+server.listen(8080, function() {
+    console.log('Server listening at port:'.yellow, server.address())
 
+})
 
 server.on('connection', function(socket) {
     var remoteAderess = socket.remoteAddress + ':' + socket.remotePort;
-    console.log('New Client conecting: '.green + remoteAderess);
+    console.log('New Client conecting: '.green + remoteAderess.green);
+
+    socket.write('Xin chao anh em 123')
 
     socket.on('data', function(d) {
         console.log('Data from:', remoteAderess, d)
@@ -14,7 +19,7 @@ server.on('connection', function(socket) {
     })
 
     socket.once('close', function() {
-        console.log('Conection from %s Closed'.yellow, remoteAderess)
+        console.log('Disconect from %s '.yellow, remoteAderess)
     })
 
     socket.on('error', function(err) {
@@ -22,7 +27,3 @@ server.on('connection', function(socket) {
     })
 })
 
-server.listen(4040, function() {
-    console.log('Server started at port:'.white, server.address())
-
-})
