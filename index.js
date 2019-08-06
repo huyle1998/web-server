@@ -1,29 +1,35 @@
-var net = require('net');
-var color = require('colors')
-var server = net.createServer();
+var express = require('express');
+var app = express();
+var port = 3000;
 
-server.listen(8080, function() {
-    console.log('Server listening at port:'.yellow, server.address())
+var users = [
+    { id: 1, name: 'Huy' },
+    { id: 2, name: 'Diem' }
+]
 
-})
+app.set('view engine', 'pug')
+app.set('views', './views')
 
-server.on('connection', function(socket) {
-    var remoteAderess = socket.remoteAddress + ':' + socket.remotePort;
-    console.log('New Client conecting: '.green + remoteAderess.green);
+app.get('/', function (req, res) {
+    res.render('indexExpress');
+});
 
-    socket.write('Xin chao anh em 123')
+app.get('/users', function (req, res) {
+    res.render('users/index', {
+        users: users
+    });
+});
 
-    socket.on('data', function(d) {
-        console.log('Data from:', remoteAderess, d)
-        socket.write('Hello' + d)
-    })
+app.get('/users/search', function (req, res) {
+    var q = req.query.q;
+    var matcheUsers = users.filter(function(users) {
+        return users.name.toLowerCase().indexOf(q.toLowerCase()) !== -1;
+    });
+    res.render('users/index', {
+        users: matcheUsers
+    });
+});
 
-    socket.once('close', function() {
-        console.log('Disconect from %s '.yellow, remoteAderess)
-    })
-
-    socket.on('error', function(err) {
-        console.log('Conection %s error: %s'.red, remoteAderess, err.message)
-    })
-})
-
+app.listen(port, function () {
+    console.log('Server litsening...')
+});
