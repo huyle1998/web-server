@@ -1,6 +1,6 @@
 <h1>Installtion</h1>
 <p>Sure that you installed nodejs.</p>
-<p>Direct to folder of poroject, open cmd/terminal and type: </p>
+<p>Direct to folder of project, open cmd/terminal and type: </p>
 <pre>npm install</pre>
 <h1>Usage</h1>
 <p>Firstly, you need to start server:</p>
