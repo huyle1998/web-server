@@ -6,4 +6,7 @@ a(href="/users/create") Create Users
 
 ul
     each user in users
-        li= user.name
+        li
+            span=user.name
+            samp &nbsp
+            a(href="/users/" + user.id) View

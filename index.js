@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser')
+const shortid = require('shortid');
 var app = express();
 
 const low = require('lowdb')
@@ -9,12 +10,10 @@ const db = low(adapter)
 // Set some defaults (required if your JSON file is empty)
 db.defaults({ users: [] }).write()
 
-var port = 3000;
+const port = 3000;
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-
-
 
 app.set('view engine', 'pug')
 
@@ -44,10 +43,17 @@ app.get('/users/create', function(req, res) {
     res.render('users/create.pug');
 });
 
+app.get('/users/:id', function(req, res) {
+    var id = (req.params.id);
+    var user = db.get('users').find({id: id}).value();
+    res.render('users/view', {
+        user: user
+    });
+});
+
 app.post('/users/create', function(req, res) {
-    // Add a post
-    db.get('users').push(req.body).write();  
-    // console.log(db.get('users'))  
+    req.body.id = shortid.generate();
+    db.get('users').push(req.body).write();       
     res.redirect('/users');
 });
 
