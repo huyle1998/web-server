@@ -1,3 +1,5 @@
 node_modules
-hot-girl
+public
+# add an exception (using !) to the preceding rule to track a specific file
 db.json
+!package.json
