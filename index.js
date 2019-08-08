@@ -51,6 +51,12 @@ app.get('/users/:id', function(req, res) {
     });
 });
 
+app.get('/users/delete/:id', function(req, res) {
+    var id = (req.params.id);
+    db.get('users').remove({id: id}).write();
+    res.redirect('/users');
+});
+
 app.post('/users/create', function(req, res) {
     req.body.id = shortid.generate();
     db.get('users').push(req.body).write();       
