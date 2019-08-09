@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var low = require('lowdb');
-var FileSync = require('lowdb/adapters/FileSync')
+var FileSync = require('lowdb/adapters/FileSync');
+const shortid = require('shortid');
 var adapter = new FileSync('db.json')
 var db = low(adapter)
 // Set some defaults (required if your JSON file is empty)
@@ -47,7 +48,7 @@ router.get('/delete/:id', function(req, res) {
 router.post('/create', function(req, res) {
     req.body.id = shortid.generate();
     db.get('users').push(req.body).write();       
-    res.redirect('/');
+    res.redirect('/users');
 });
 
 module.exports = router
